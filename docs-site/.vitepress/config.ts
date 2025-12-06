@@ -3,13 +3,13 @@ import { defineConfig } from 'vitepress';
 export default defineConfig({
   title: 'Example Plugin',
   description: 'Documentation for the Example Plugin',
-  base: '/obsidian-example-plugin/',
+  base: '/obsidian-plugin-template/',
 
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/' },
-      { text: 'GitHub', link: 'https://github.com/yourusername/obsidian-example-plugin' }
+      { text: 'GitHub', link: 'https://github.com/bright-fakl/obsidian-plugin-template' }
     ],
 
     sidebar: [
@@ -41,7 +41,7 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/yourusername/obsidian-example-plugin' }
+      { icon: 'github', link: 'https://github.com/bright-fakl/obsidian-plugin-template' }
     ]
   },
 
