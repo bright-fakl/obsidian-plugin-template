@@ -26,6 +26,7 @@ export default defineConfig({
       {
         text: 'Development',
         items: [
+          { text: 'Overview', link: '/development/' },
           { text: 'Architecture', link: '/development/architecture' },
           { text: 'API Reference', link: '/development/api' },
           { text: 'Testing', link: '/development/testing' },
