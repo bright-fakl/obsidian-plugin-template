@@ -111,9 +111,10 @@ npm run version 1.0.0
 ### Fixed
 - Bug fixes
 ```
-- Commit changes 
+- Commit and push changes 
 ```bash
 git commit -am "Release v1.0.0"
+git push origin main
 ```
 
 <details class="manual">
