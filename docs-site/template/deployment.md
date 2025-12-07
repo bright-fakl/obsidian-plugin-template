@@ -2,47 +2,59 @@
 
 This guide covers how to build, test, and deploy your Obsidian plugin created from this template.
 
-## Overview
+## Step-by-Step Deployment Process
 
-Deploying your plugin involves building the TypeScript code, testing it thoroughly, and distributing it to users through GitHub releases or Obsidian's community plugin directory.
+### 1. Pre-Deployment Preparation
+**Purpose**: Ensure your code is ready for deployment
 
-## Pre-Deployment Checklist
+**Actions**:
+```bash
+# Run all tests
+npm test
 
-### Code Quality
+# Check TypeScript
+npx tsc --noEmit
 
-- [ ] **All tests pass**: `npm test`
-- [ ] **No TypeScript errors**: `npx tsc --noEmit`
-- [ ] **Build succeeds**: `npm run build`
-- [ ] **No lint errors**: `npm run lint`
-- [ ] **Code coverage adequate**: Review test coverage report
+# Verify build succeeds
+npm run build
+```
 
-### Functionality Testing
+**Manual Testing Checklist**:
+- [ ] Plugin loads without errors
+- [ ] All commands work
+- [ ] Settings save and persist
+- [ ] No console errors
+- [ ] Works on target platforms (Desktop/Mobile)
 
-- [ ] **Manual testing completed** in Obsidian
-- [ ] **Settings work correctly**
-- [ ] **Commands register and execute**
-- [ ] **No console errors**
-- [ ] **Works on target platforms** (Desktop/Mobile)
+### 2. Update Documentation
+**Purpose**: Ensure all documentation is current
 
-### Documentation
+**Actions**:
+- Update README.md with plugin-specific information
+- Update plugin documentation to include new features and changes
+- Locally test documentation build and preview
+```bash
+# Build and preview documentation locally
+npm run docs:build
+npm run docs:preview
+```
 
-- [ ] **README.md updated** with plugin-specific information
-- [ ] **CHANGELOG.md updated** with version history
-- [ ] **Version updated** in manifest.json and package.json
-- [ ] **Documentation site updated** (if applicable)
+<details>
+<summary>Documentation Deployment</summary>
 
-## Building for Production
+A workflow for automatically deploying documentation to GitHub Pages is included in the template. The workflow is triggered on pushes to the `main` branch and builds the documentation using VitePress.
 
-### Build Commands Comparison
+To set up GitHub Pages for documentation deployment in your repository:
 
-| Command | Purpose | When to Use |
-|---------|---------|--------------|
-| `npm run dev` | Development mode with file watching | During active development |
-| `npm run build` | Production build | For final deployment |
-| `npm run version X.X.X` | Update version in manifest.json and package.json | When releasing new versions |
+**Enable GitHub Pages** in your repository settings:
+  - Go to Settings → Pages
+  - Select `GitHub Actions` as the source
+</details>
 
-### 1. Production Build
+### 3. Production Build
+**Purpose**: Create optimized production build
 
+**Actions**:
 ```bash
 # Clean previous builds
 rm -rf main.js *.js.map
@@ -52,55 +64,56 @@ npm install
 
 # Run production build
 npm run build
-```
 
-### 2. Verify Build Output
-
-```bash
-# Check that main.js was created
-ls -la main.js
-
-# Verify manifest.json exists
-ls -la manifest.json
-
-# Check file sizes
+# Verify build output
+ls -la main.js manifest.json
 du -h main.js manifest.json
 ```
 
-### 3. Test Production Build
+### 4. Test Production Build
+**Purpose**: Validate the production build works in a clean environment
 
+**Actions**:
+- Test in a clean Obsidian vault
+- Enable plugin
+- Test all functionality
+- Check for errors
+
+<details class="manual">
+<summary>Testing in Separate Obsidian Vault</summary>
+
+If you need to test in a separate vault:
 ```bash
 # Copy to test vault
 cp main.js manifest.json ~/TestVault/.obsidian/plugins/your-plugin-name/
-
-# Test in Obsidian
-# - Enable plugin
-# - Test all functionality
-# - Check for errors
 ```
+</details>
 
-## Version Management
+### 5. Update Version and Changelog
+**Purpose**: Prepare for release
 
-The template includes a version management script that updates version numbers in `manifest.json` and `package.json`:
-
+**Actions**:
+- Update version in `manifest.json` and `package.json`
 ```bash
-# Update to new version
+# Update version (automated)
 npm run version 1.0.0
-
-# This will:
-# - Update version in manifest.json
-# - Update version in package.json
-# - Display instructions for creating git tag (manual step)
 ```
+- Update CHANGELOG.md with release notes following [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format:
+```markdown
+## [1.0.0] - 2024-01-01
 
-**Note**: The script does NOT automatically create a git tag. After running the version script, you need to manually create and push the tag:
+### Added
+- New feature descriptions
 
+### Changed
+- Improvements made
+
+### Fixed
+- Bug fixes
+```
+- Commit changes 
 ```bash
-# Create git tag
-git tag 1.0.0
-
-# Push tag to GitHub
-git push origin 1.0.0
+git commit -am "Release v1.0.0"
 ```
 
 <details class="manual">
@@ -108,7 +121,7 @@ git push origin 1.0.0
 
 If you prefer to update the version manually:
 
-### Update `manifest.json`
+**Update `manifest.json`**:
 ```json
 {
   "version": "1.0.0",
@@ -118,7 +131,7 @@ If you prefer to update the version manually:
 }
 ```
 
-### Update `package.json`
+**Update `package.json`**:
 ```json
 {
   "version": "1.0.0",
@@ -127,46 +140,15 @@ If you prefer to update the version manually:
 ```
 </details>
 
-## Changelog Management
+### 6. Create Git Tag and Release
+**Purpose**: Create version tag and release
 
-### Updating CHANGELOG.md
-
-Maintain a clear changelog following the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format:
-
-```markdown
-## [1.0.0] - 2024-01-01
-
-### Added
-- New feature A description
-- New feature B description
-
-### Changed
-- Improved performance of X
-- Updated Y behavior
-
-### Fixed
-- Fixed issue with Z
-- Resolved problem with W
+**Actions**:
+```bash
+# Create and push tag
+git tag 1.0.0
+git push origin 1.0.0
 ```
-
-**Best Practices**:
-- Move items from `[Unreleased]` section to the new version
-- Include date in `YYYY-MM-DD` format
-- Group changes by category (Added, Changed, Fixed, etc.)
-- Keep descriptions concise but informative
-
-## GitHub Releases
-
-### Automated Releases (Recommended)
-
-The template includes a GitHub Actions workflow that automatically creates releases when you push version tags.
-
-**Automated Release Process**:
-
-1. **Update version**: `npm run version 1.0.0`
-2. **Update CHANGELOG.md** with release notes
-3. **Commit changes**: `git commit -am "Release v1.0.0"`
-4. **Create and push tag**: `git tag 1.0.0 && git push origin 1.0.0`
 
 The GitHub Action will automatically:
 - Build your plugin
@@ -194,76 +176,38 @@ If you prefer manual control over releases:
 4. **Upload assets**:
    - `main.js` - Main plugin file
    - `manifest.json` - Plugin manifest
-
 </details>
 
-### Release Notes Template
+### 7. Submit to Community Plugin Directory
+**Purpose**: Make plugin available to users
 
-Use this template for your GitHub release description:
+**Actions**:
+1. Fork https://github.com/obsidianmd/obsidian-releases
+2. Add plugin entry to `community-plugins.json`
+3. Submit pull request
 
-```markdown
-## What's Changed in v1.0.0
+<details>
+<summary>Plugin Entry Example</summary>
 
-### ✨ New Features
-- Feature A description
-- Feature B description
-
-### 🐛 Bug Fixes
-- Fixed issue X
-- Fixed issue Y
-
-### 🔧 Improvements
-- Improved performance
-- Better error handling
-
-## Installation
-
-### Manual Installation
-1. Download `main.js` and `manifest.json` from assets
-2. Place in your vault's `.obsidian/plugins/your-plugin-name/` folder
-3. Enable plugin in Obsidian settings
-
-### Community Plugin (Coming Soon)
-Plugin will be available in Obsidian's community plugin directory.
+```json
+{
+  "id": "your-plugin-id",
+  "name": "Your Plugin Name",
+  "author": "Your Name",
+  "description": "Brief description",
+  "repo": "yourusername/your-plugin-repo"
+}
 ```
+</details>
 
-**Release Notes Usage**:
-- Copy content from your CHANGELOG.md entry
-- Add installation instructions
-- Include any special upgrade notes
-- Mention breaking changes prominently
+### 8. Post-Deployment Monitoring
+**Purpose**: Monitor and maintain the release
 
-## Obsidian Community Plugin Directory
-
-### Prerequisites
-
-- GitHub repository with your plugin
-- Plugin published with proper manifest
-- Documentation site (recommended)
-- Issue tracker for support
-
-### Submission Process
-
-1. **Prepare repository**:
-   - Clean up code and documentation
-   - Ensure proper licensing
-   - Add installation instructions
-
-2. **Create pull request**:
-   - Fork https://github.com/obsidianmd/obsidian-releases
-   - Add your plugin to `community-plugins.json`
-   - Submit pull request
-
-3. **Example entry**:
-   ```json
-   {
-     "id": "your-plugin-id",
-     "name": "Your Plugin Name",
-     "author": "Your Name",
-     "description": "Brief description",
-     "repo": "yourusername/your-plugin-repo"
-   }
-   ```
+**Actions**:
+- Monitor GitHub issues
+- Track download counts
+- Respond to user feedback
+- Plan next updates
 
 ## Distribution Strategies
 
@@ -283,129 +227,9 @@ Use **both** strategies:
 1. **Community Plugin Directory** - For easy user installation
 2. **GitHub Releases** - For development builds and beta testing
 
-```bash
-# For Community Plugin Directory
-# Submit to obsidian-releases repository
+## Build Optimization
 
-# For GitHub Releases
-# Create release with main.js and manifest.json assets
-```
-
-## Testing Before Deployment
-
-### Automated Testing
-
-```bash
-# Run full test suite
-npm test
-
-# Run with coverage
-npm run test:coverage
-
-# Run linting
-npm run lint
-
-# Type checking
-npx tsc --noEmit
-```
-
-### Manual Testing Checklist
-
-#### Desktop Testing
-- [ ] Plugin loads without errors
-- [ ] All commands work
-- [ ] Settings save and persist
-- [ ] No console errors
-- [ ] Works across different vault types
-
-#### Mobile Testing (if applicable)
-- [ ] Plugin works on mobile
-- [ ] UI is responsive
-- [ ] Performance is acceptable
-- [ ] No mobile-specific issues
-
-#### Cross-Version Testing
-- [ ] Test on minimum supported Obsidian version
-- [ ] Test on latest Obsidian version
-- [ ] Test upgrade scenarios
-
-### User Acceptance Testing
-
-1. **Beta testing**:
-   - Share with friends/colleagues
-   - Gather feedback
-   - Fix critical issues
-
-2. **Documentation review**:
-   - Installation instructions clear
-   - Usage examples work
-   - Screenshots up-to-date
-
-## Post-Deployment
-
-### Monitoring
-
-1. **GitHub Issues**:
-   - Monitor for bug reports
-   - Respond to user questions
-   - Track feature requests
-
-2. **Analytics** (if applicable):
-   - Track download counts
-   - Monitor usage patterns
-   - Identify popular features
-
-### Updates and Maintenance
-
-1. **Regular updates**:
-   ```bash
-   # Update dependencies
-   npm update
-
-   # Test updates
-   npm test
-
-   # Create new release
-   npm run version 1.1.0
-   ```
-
-2. **Bug fixes**:
-   - Quick turnaround for critical issues
-   - Follow semantic versioning
-   - Update changelog
-
-3. **Feature additions**:
-   - Follow user feedback
-   - Maintain backwards compatibility
-   - Update documentation
-
-## Security Considerations
-
-### Code Security
-
-- **No hardcoded secrets** in source code
-- **Validate user inputs** properly
-- **Use HTTPS** for any network requests
-- **Review dependencies** for vulnerabilities
-
-```bash
-# Check for security vulnerabilities
-npm audit
-
-# Fix automatically
-npm audit fix
-```
-
-### Distribution Security
-
-- **Sign releases** (optional)
-- **Provide checksums** for files
-- **Use official channels** for distribution
-- **Monitor for unauthorized copies**
-
-## Performance Optimization
-
-### Build Optimization
+The template includes optimized build configuration. For advanced build optimization, you can modify the Rollup configuration:
 
 ```javascript
 // rollup.config.mjs - Optimize build output
@@ -422,26 +246,6 @@ export default {
     })
   ]
 };
-```
-
-### Runtime Performance
-
-- **Lazy load** heavy components
-- **Debounce** user inputs
-- **Cache** computed values
-- **Use efficient** data structures
-
-```typescript
-// Example: Lazy loading
-async onload() {
-  // Don't load heavy components immediately
-}
-
-async activateFeature() {
-  // Load when needed
-  const { HeavyComponent } = await import('./components/heavy');
-  new HeavyComponent().init();
-}
 ```
 
 ## Troubleshooting
@@ -490,57 +294,40 @@ npx tsc --noEmit
 # - Test in isolation
 ```
 
+## Security Considerations
+
+### Code Security
+- **No hardcoded secrets** in source code
+- **Validate user inputs** properly
+- **Use HTTPS** for any network requests
+- **Review dependencies** for vulnerabilities
+
+```bash
+# Check for security vulnerabilities
+npm audit
+
+# Fix automatically
+npm audit fix
+```
+
+### Distribution Security
+- **Sign releases** (optional)
+- **Provide checksums** for files
+- **Use official channels** for distribution
+- **Monitor for unauthorized copies**
+
 ## Legal Considerations
 
 ### Licensing
-
 1. **Choose appropriate license** (MIT recommended)
 2. **Include license file** in repository
 3. **Respect third-party licenses** for dependencies
 
 ### Privacy
-
 - **No data collection** without user consent
 - **Local storage only** unless explicitly stated
 - **Clear privacy policy** if applicable
 
-## Documentation Deployment
-
-### GitHub Pages
-
-The template includes documentation deployment:
-
-```yaml
-# .github/workflows/deploy-docs.yml
-name: Deploy Documentation
-
-on:
-  push:
-    branches: [main]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: npm run docs:build
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs-site/.vitepress/dist
-```
-
-### Documentation Updates
-
-```bash
-# Update documentation
-# 1. Edit markdown files in docs-site/
-# 2. Build docs
-npm run docs:build
-
-# 3. Deploy to GitHub Pages
-npm run docs:deploy
-```
 
 ## Getting Help
 
