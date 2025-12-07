@@ -1,6 +1,6 @@
 {
   "name": "obsidian-example-plugin",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A minimal Obsidian plugin template with complete professional infrastructure",
   "main": "main.js",
   "type": "module",
