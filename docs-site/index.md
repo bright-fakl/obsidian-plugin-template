@@ -1,60 +1,59 @@
-# Example Plugin Documentation
+# Obsidian Plugin Template
 
-Welcome to the documentation for the Example Plugin!
+A production-ready template for building Obsidian plugins with complete infrastructure.
 
-## Overview
+## Choose Your Path
 
-Example Plugin is a minimal Obsidian plugin template that demonstrates text transformation functionality. This documentation will help you understand how to use and customize the plugin.
+::: tip 🚀 Create a Plugin
 
-## Features
+**[Plugin Development Guide](/template/getting-started)**
 
-- **Text Transformation**: Convert selected text to uppercase, lowercase, or title case
-- **Configurable**: Customize transformation behavior through settings
-- **Easy to Use**: Simple command palette integration
+Learn how to use this template to build your own Obsidian plugin with best practices, testing, and deployment automation.
 
-## Quick Start
+*Perfect for developers creating new Obsidian plugins*
 
-1. **Install the plugin** in Obsidian
-2. **Select text** in your note
-3. **Open command palette** (`Ctrl/Cmd + P`)
-4. **Run "Transform selected text"** command
-5. **See your text transformed**!
+:::
 
-## Getting Started
+::: info 📖 Try the Example
 
-### Installation
+**[Example Plugin Demo](/example/index)**
 
-1. Download the plugin from the [releases page](https://github.com/yourusername/obsidian-example-plugin/releases)
-2. Place the `main.js` and `manifest.json` files in your Obsidian vault's plugins folder
-3. Enable the plugin in Obsidian settings
+See the template's example functionality (text transformation) in action.
 
-### Usage
+*Perfect for users trying out the example plugin*
 
-1. Select text in your note
-2. Open the command palette (`Ctrl/Cmd + P`)
-3. Search for "Transform selected text"
-4. Execute the command
-5. Your selected text will be transformed according to your settings
+:::
 
-### Configuration
+::: warning 🤝 Contribute
 
-Configure the plugin through the settings tab:
+**[Contributing Guide](/contributing/index)**
 
-1. Open Obsidian settings
-2. Navigate to "Example Plugin" settings
-3. Choose your preferred transformation mode
-4. Toggle confirmation notices on/off
+Help improve this template for everyone.
 
-## Development
+*Perfect for contributors to the template project*
 
-This plugin is designed as a template for building your own Obsidian plugins. See the [Development Guide](/development/) for details on customization.
+:::
 
-## Support
+---
 
-- **Issues**: Report bugs on [GitHub Issues](https://github.com/yourusername/obsidian-example-plugin/issues)
-- **Discussions**: Join the conversation on [GitHub Discussions](https://github.com/yourusername/obsidian-example-plugin/discussions)
-- **Contributing**: See [Contributing Guide](/development/contributing)
+## What's Included
+
+This template provides a **complete, production-ready foundation**:
+
+- ✅ **TypeScript** - Type-safe development with strict mode
+- ✅ **Vitest** - Testing framework with Obsidian API mocks
+- ✅ **VitePress** - Professional documentation site
+- ✅ **GitHub Actions** - Automated releases and docs deployment
+- ✅ **Settings System** - Robust settings with migration support
+- ✅ **Example Plugin** - Working plugin demonstrating best practices
+
+## Quick Links
+
+- 📚 [GitHub Repository](https://github.com/bright-fakl/obsidian-plugin-template)
+- 📝 [Changelog](https://github.com/bright-fakl/obsidian-plugin-template/blob/main/CHANGELOG.md)
+- 🐛 [Report Issues](https://github.com/bright-fakl/obsidian-plugin-template/issues)
+- 💡 [Feature Requests](https://github.com/bright-fakl/obsidian-plugin-template/issues)
 
 ## License
 
-This plugin is released under the [MIT License](https://github.com/yourusername/obsidian-example-plugin/blob/main/LICENSE).
+This template is released under the [MIT License](https://github.com/bright-fakl/obsidian-plugin-template/blob/main/LICENSE).

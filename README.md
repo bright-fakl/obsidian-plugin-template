@@ -65,42 +65,21 @@ YourVault/.obsidian/plugins/your-plugin-name/
 
 This template provides a **complete, production-ready foundation**:
 
-### ✅ Core Plugin Files
+- ✅ **TypeScript** - Type-safe development with strict mode
+- ✅ **Vitest** - Testing framework with Obsidian API mocks
+- ✅ **VitePress** - Professional documentation site
+- ✅ **GitHub Actions** - Automated releases and docs deployment
+- ✅ **Settings System** - Robust settings with migration support
+- ✅ **Example Plugin** - Working plugin demonstrating best practices
 
-- [`src/main.ts`](src/main.ts) - Plugin entry point with text transformation example
-- [`src/settings/plugin-settings.ts`](src/settings/plugin-settings.ts) - Settings schema
-- [`src/settings/settings-tab.ts`](src/settings/settings-tab.ts) - Settings UI
+### Core Components
 
-### 🔧 Build Configuration
-
-- [`package.json`](package.json) - Dependencies and scripts
-- [`tsconfig.json`](tsconfig.json) - TypeScript configuration
-- [`rollup.config.mjs`](rollup.config.mjs) - Build configuration
-- [`vitest.config.ts`](vitest.config.ts) - Testing configuration
-
-### 🧪 Testing Infrastructure
-
-- [`tests/__mocks__/obsidian.ts`](tests/__mocks__/obsidian.ts) - Mock Obsidian API
-- [`tests/TESTING.md`](tests/TESTING.md) - Testing guidelines
-- Vitest configured with JSDOM environment
-
-### 📚 Documentation
-
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - Internal architecture docs
-- [`docs-site/`](docs-site/) - VitePress documentation site
-- [`CHANGELOG.md`](CHANGELOG.md) - Version history template
-
-### 🤖 CI/CD Automation
-
-- [`scripts/version.js`](scripts/version.js) - Version management
-- [`release.yml`](.github/workflows/release.yml) - Automated releases
-- [`deploy-docs.yml`](.github/workflows/deploy-docs.yml) - Documentation deployment
-
-### 📝 Project Management
-
-- [`LICENSE`](LICENSE) - MIT License
-- [`FUNDING.yml`](.github/FUNDING.yml) - Sponsorship template
-- [`.gitignore`](.gitignore) - Git exclusions
+- **Plugin Architecture** - Clean separation of concerns
+- **Settings Management** - Persistent configuration with defaults
+- **Command System** - Easy command registration
+- **Build Pipeline** - Optimized production builds
+- **Testing Setup** - Comprehensive test infrastructure
+- **Documentation** - Multi-audience documentation structure
 
 ## 🏗️ Architecture
 
@@ -129,47 +108,11 @@ This template follows **professional plugin architecture**:
 - **Observer**: Event handling system
 - **Factory**: Settings migration
 
-## 🛠️ Customization Guide
+## 🤝 Contributing
 
-### 1. Rename the Plugin
+Contributions are welcome! Help improve this template for everyone.
 
-Update these files with your plugin name:
-
-- [`manifest.json`](manifest.json) - Change `id`, `name`, `description`
-- [`package.json`](package.json) - Change `name`, `description`
-- [`src/main.ts`](src/main.ts) - Update class name and functionality
-
-### 2. Add Your Functionality
-
-Replace the text transformation example with your plugin logic:
-
-```typescript
-// In src/main.ts
-this.addCommand({
-  id: 'your-command-id',
-  name: 'Your Command Name',
-  editorCallback: (editor: Editor, view: MarkdownView) => {
-    // Your command logic here
-  },
-});
-```
-
-### 3. Customize Settings
-
-Update the settings schema in [`src/settings/plugin-settings.ts`](src/settings/plugin-settings.ts):
-
-```typescript
-export interface YourPluginSettings {
-  yourSetting: string;
-  yourOption: boolean;
-}
-```
-
-### 4. Update Documentation
-
-- Update [`docs-site/`](docs-site/) with your plugin's documentation
-- Modify [`README.md`](README.md) with your plugin's description
-- Update [`CHANGELOG.md`](CHANGELOG.md) with your version history
+[Contributing guide](https://bright-fakl.github.io/obsidian-plugin-template/contributing/) • [Development setup](https://bright-fakl.github.io/obsidian-plugin-template/contributing/development-setup)
 
 ## 🚀 Development Workflow
 

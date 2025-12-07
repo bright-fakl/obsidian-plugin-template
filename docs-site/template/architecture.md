@@ -2,16 +2,6 @@
 
 This document explains the architecture and design patterns used in this Obsidian plugin template.
 
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Architecture Layers](#architecture-layers)
-3. [File Structure](#file-structure)
-4. [Core Components](#core-components)
-5. [Data Flow](#data-flow)
-6. [Design Patterns](#design-patterns)
-7. [Extension Points](#extension-points)
-
 ## Overview
 
 This plugin follows a **layered architecture** with clear separation of concerns:
@@ -21,14 +11,14 @@ This plugin follows a **layered architecture** with clear separation of concerns
 │     Obsidian Application            │
 │  (Provides: Vault, Workspace, etc.) │
 └─────────────────────────────────────┘
-                 ↕
+                  ↕
 ┌─────────────────────────────────────┐
 │        Plugin Layer                 │
 │  - Plugin lifecycle (main.ts)       │
 │  - Command registration             │
 │  - Event handling                   │
 └─────────────────────────────────────┘
-                 ↕
+                  ↕
 ┌─────────────────────────────────────┐
 │      Settings Layer                 │
 │  - Settings schema                  │
@@ -65,103 +55,6 @@ This plugin follows a **layered architecture** with clear separation of concerns
 - Handle settings migration across versions
 - Render settings UI
 
-### 3. Business Logic Layer
-
-**Location:** Plugin methods in `main.ts` (or separate files for complex plugins)
-
-**Responsibilities:**
-- Core plugin functionality
-- Text transformation logic
-- Data processing
-
-**Example:**
-```typescript
-private transformText(text: string, mode: TransformMode): string {
-  // Business logic here
-}
-```
-
-## File Structure
-
-```
-src/
-├── main.ts                  # Plugin entry point
-└── settings/
-    ├── plugin-settings.ts   # Settings schema and defaults
-    └── settings-tab.ts      # Settings UI
-```
-
-### Main Plugin File (`src/main.ts`)
-
-```typescript
-export default class ExamplePlugin extends Plugin {
-  settings!: ExamplePluginSettings;
-
-  async onload() {
-    // 1. Load settings
-    await this.loadSettings();
-
-    // 2. Register UI elements
-    this.addSettingTab(new ExamplePluginSettingsTab(this.app, this));
-
-    // 3. Register commands
-    this.addCommand({ /* ... */ });
-
-    // 4. Register event handlers (if needed)
-    // this.registerEvent(/* ... */);
-  }
-
-  async onunload() {
-    // Cleanup code
-  }
-
-  // Helper methods
-  private transformText(text: string, mode: string): string { /* ... */ }
-
-  async loadSettings() { /* ... */ }
-  async saveSettings() { /* ... */ }
-}
-```
-
-### Settings Schema (`src/settings/plugin-settings.ts`)
-
-```typescript
-export interface ExamplePluginSettings {
-  // Define your settings here
-  transformMode: 'uppercase' | 'lowercase' | 'title';
-  showNotices: boolean;
-}
-
-export const DEFAULT_SETTINGS: ExamplePluginSettings = {
-  // Default values
-  transformMode: 'uppercase',
-  showNotices: true,
-};
-
-export function migrateSettings(settings: ExamplePluginSettings): void {
-  // Handle settings migration when schema changes
-}
-```
-
-### Settings UI (`src/settings/settings-tab.ts`)
-
-```typescript
-export class ExamplePluginSettingsTab extends PluginSettingTab {
-  plugin: ExamplePlugin;
-
-  display(): void {
-    const { containerEl } = this;
-    containerEl.empty();
-
-    // Create settings UI using Obsidian's Setting API
-    new Setting(containerEl)
-      .setName('Setting name')
-      .setDesc('Setting description')
-      .addDropdown(/* ... */);
-  }
-}
-```
-
 ## Core Components
 
 ### Plugin Class
@@ -189,72 +82,12 @@ Extends `PluginSettingTab` from Obsidian API.
 - Update plugin settings
 - Trigger settings save
 
-## Data Flow
-
-### Command Execution Flow
-
-```
-User activates command
-        ↓
-Command callback executed
-        ↓
-Read current settings
-        ↓
-Execute business logic
-        ↓
-Update Obsidian state
-        ↓
-Show notification (if enabled)
-```
-
-### Settings Update Flow
-
-```
-User changes setting in UI
-        ↓
-Setting component onChange callback
-        ↓
-Update plugin.settings object
-        ↓
-Call plugin.saveSettings()
-        ↓
-Settings persisted to disk
-```
-
-### Plugin Initialization Flow
-
-```
-Obsidian loads plugin
-        ↓
-Call onload()
-        ↓
-Load settings from disk
-        ↓
-Migrate settings (if needed)
-        ↓
-Register settings tab
-        ↓
-Register commands
-        ↓
-Register event handlers
-        ↓
-Plugin ready
-```
-
 ## Design Patterns
 
 ### 1. Singleton Pattern
-
 The plugin class is a singleton managed by Obsidian.
 
-```typescript
-export default class ExamplePlugin extends Plugin {
-  // Only one instance exists
-}
-```
-
 ### 2. Strategy Pattern
-
 Text transformation modes use strategy pattern:
 
 ```typescript
@@ -268,7 +101,6 @@ private transformText(text: string, mode: TransformMode): string {
 ```
 
 ### 3. Observer Pattern
-
 Obsidian's event system uses observer pattern:
 
 ```typescript
@@ -280,7 +112,6 @@ this.registerEvent(
 ```
 
 ### 4. Factory Pattern
-
 Settings migration uses factory pattern:
 
 ```typescript
@@ -350,7 +181,7 @@ export const VIEW_TYPE_EXAMPLE = 'example-view';
 export class ExampleView extends ItemView {
   getViewType() { return VIEW_TYPE_EXAMPLE; }
   getDisplayText() { return 'Example View'; }
-  
+
   async onOpen() {
     // Render view
   }
@@ -366,23 +197,9 @@ this.registerView(
 );
 ```
 
-### Adding Event Handlers
-
-```typescript
-// In onload()
-this.registerEvent(
-  this.app.workspace.on('file-open', (file) => {
-    if (file) {
-      // Handle file open
-    }
-  })
-);
-```
-
 ## Best Practices
 
 ### 1. Always Clean Up
-
 Unregister event listeners and views in `onunload()`:
 
 ```typescript
@@ -393,7 +210,6 @@ async onunload() {
 ```
 
 ### 2. Use Type Safety
-
 Define TypeScript interfaces for all data structures:
 
 ```typescript
@@ -440,7 +256,6 @@ export function migrateSettings(settings: ExamplePluginSettings): void {
 ## Performance Considerations
 
 ### 1. Lazy Loading
-
 Load heavy resources only when needed:
 
 ```typescript
@@ -455,7 +270,6 @@ async activateView() {
 ```
 
 ### 2. Caching
-
 Cache computed values:
 
 ```typescript
@@ -470,7 +284,6 @@ getData(key: string): any {
 ```
 
 ### 3. Async Operations
-
 Use async/await for I/O operations:
 
 ```typescript
@@ -483,7 +296,6 @@ async loadSettings() {
 ## Testing Strategy
 
 ### Unit Tests
-
 Test business logic in isolation:
 
 ```typescript
@@ -496,7 +308,6 @@ describe('transformText', () => {
 ```
 
 ### Integration Tests
-
 Test plugin integration with Obsidian:
 
 ```typescript
@@ -516,6 +327,7 @@ describe('Plugin initialization', () => {
 
 ## Next Steps
 
-- Review the [Testing Guide](/development/testing) for testing best practices
-- Explore the [API Reference](/development/api) for detailed API documentation
-- Check the [Contributing Guide](/development/contributing) to help improve the project
+- Learn how to [Customize](/template/customization) your plugin
+- Set up [Testing](/template/testing) for your plugin
+- Prepare for [Deployment](/template/deployment)
+- Check the [API Reference](/template/api) for detailed documentation
