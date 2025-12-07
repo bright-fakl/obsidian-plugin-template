@@ -39,7 +39,7 @@ Deploying your plugin involves building the TypeScript code, testing it thorough
 |---------|---------|--------------|
 | `npm run dev` | Development mode with file watching | During active development |
 | `npm run build` | Production build | For final deployment |
-| `npm run version X.X.X` | Update version and create tag | When releasing new versions |
+| `npm run version X.X.X` | Update version in manifest.json and package.json | When releasing new versions |
 
 ### 1. Production Build
 
@@ -81,9 +81,7 @@ cp main.js manifest.json ~/TestVault/.obsidian/plugins/your-plugin-name/
 
 ## Version Management
 
-### Using the Version Script
-
-The template includes a version management script:
+The template includes a version management script that updates version numbers in `manifest.json` and `package.json`:
 
 ```bash
 # Update to new version
@@ -92,14 +90,25 @@ npm run version 1.0.0
 # This will:
 # - Update version in manifest.json
 # - Update version in package.json
-# - Create git tag
+# - Display instructions for creating git tag (manual step)
 ```
 
-### Manual Version Update
+**Note**: The script does NOT automatically create a git tag. After running the version script, you need to manually create and push the tag:
 
-If you prefer to update manually:
+```bash
+# Create git tag
+git tag 1.0.0
 
-#### Update `manifest.json`
+# Push tag to GitHub
+git push origin 1.0.0
+```
+
+<details class="manual">
+<summary>Alternative: Manual Version Update</summary>
+
+If you prefer to update the version manually:
+
+### Update `manifest.json`
 ```json
 {
   "version": "1.0.0",
@@ -109,29 +118,65 @@ If you prefer to update manually:
 }
 ```
 
-#### Update `package.json`
+### Update `package.json`
 ```json
 {
   "version": "1.0.0",
   "name": "obsidian-your-plugin-name"
 }
 ```
+</details>
 
-#### Update `CHANGELOG.md`
+## Changelog Management
+
+### Updating CHANGELOG.md
+
+Maintain a clear changelog following the [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) format:
+
 ```markdown
-# Changelog
-
 ## [1.0.0] - 2024-01-01
 
 ### Added
-- Initial release
-- Text transformation functionality
-- Settings management
+- New feature A description
+- New feature B description
+
+### Changed
+- Improved performance of X
+- Updated Y behavior
+
+### Fixed
+- Fixed issue with Z
+- Resolved problem with W
 ```
+
+**Best Practices**:
+- Move items from `[Unreleased]` section to the new version
+- Include date in `YYYY-MM-DD` format
+- Group changes by category (Added, Changed, Fixed, etc.)
+- Keep descriptions concise but informative
 
 ## GitHub Releases
 
-### Creating a Release
+### Automated Releases (Recommended)
+
+The template includes a GitHub Actions workflow that automatically creates releases when you push version tags.
+
+**Automated Release Process**:
+
+1. **Update version**: `npm run version 1.0.0`
+2. **Update CHANGELOG.md** with release notes
+3. **Commit changes**: `git commit -am "Release v1.0.0"`
+4. **Create and push tag**: `git tag 1.0.0 && git push origin 1.0.0`
+
+The GitHub Action will automatically:
+- Build your plugin
+- Create a GitHub release
+- Upload `main.js` and `manifest.json` as release assets
+
+<details class="manual">
+<summary>Alternative: Manual Release Process</summary>
+
+If you prefer manual control over releases:
 
 1. **Create release notes**:
    ```bash
@@ -150,51 +195,11 @@ If you prefer to update manually:
    - `main.js` - Main plugin file
    - `manifest.json` - Plugin manifest
 
-### Automated Releases (GitHub Actions)
-
-The template includes a modern release workflow:
-
-```yaml
-# .github/workflows/release.yml
-name: Release
-
-on:
-  push:
-    tags:
-      - '*'
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: '18'
-      - uses: actions/cache@v3
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-      - run: npm install
-      - run: npm run build
-      - uses: actions/upload-artifact@v3
-        with:
-          name: build-artifacts
-          path: |
-            main.js
-            manifest.json
-      - uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
-          files: |
-            main.js
-            manifest.json
-```
+</details>
 
 ### Release Notes Template
+
+Use this template for your GitHub release description:
 
 ```markdown
 ## What's Changed in v1.0.0
@@ -221,6 +226,12 @@ jobs:
 ### Community Plugin (Coming Soon)
 Plugin will be available in Obsidian's community plugin directory.
 ```
+
+**Release Notes Usage**:
+- Copy content from your CHANGELOG.md entry
+- Add installation instructions
+- Include any special upgrade notes
+- Mention breaking changes prominently
 
 ## Obsidian Community Plugin Directory
 
@@ -350,10 +361,10 @@ npx tsc --noEmit
    ```bash
    # Update dependencies
    npm update
-   
+
    # Test updates
    npm test
-   
+
    # Create new release
    npm run version 1.1.0
    ```
@@ -405,7 +416,7 @@ export default {
     compact: true,    // Minimize output
   },
   plugins: [
-    typescript({ 
+    typescript({
       tsconfig: './tsconfig.json',
       sourceMap: false, // Disable for production
     })
