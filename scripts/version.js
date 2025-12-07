@@ -1,13 +1,17 @@
 /**
  * Version Management Script
- * 
+ *
  * This script updates version numbers across manifest.json and package.json
  * Usage: npm run version <version-number>
  * Example: npm run version 1.0.0
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Get version from command line arguments
 const targetVersion = process.argv[2];
